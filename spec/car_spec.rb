@@ -80,6 +80,18 @@ RSpec.describe Car do
   it 'should not allow invalid starting orientations' do
   	expect { Car.new(1, 1, :rubbish) }.to raise_error 
   end
+
+    context 'when a car starts at (1, 1), is pointing north and turns left' do 
+    before(:each) do
+      @d = Car.new(1, 1, :north)
+      @d.turn(:left)
+    end
+
+    it 'should move the car to (1, 1) and be pointing west' do
+      expect(@d.position).to eq([1, 1, :west])
+    end
+  end
+
 end
 
 

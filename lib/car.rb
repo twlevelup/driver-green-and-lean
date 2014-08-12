@@ -3,7 +3,7 @@ class Car
 
   def initialize(x, y, orientation)
   	if ![:north, :east, :south, :west].include?(orientation)
-  		raise ArgumentError.new('Invalid orientation.')
+  		raise Exception('Invalid orientation.')
   	end
 
   	@x = x
@@ -23,6 +23,34 @@ class Car
 	  		@x = @x - 1
   	end
   end
+
+  def turn(direction)
+    if direction == :left
+      case @orientation
+        when :north
+          @orientation = :west
+        when :south
+          @orientation = :east
+        when :east
+          @orientation = :north
+        when :west
+          @orientation = :south
+      end
+
+    elsif direction == :right
+      case @orientation
+        when :north
+          @orientation = :east
+        when :south
+          @orientation = :west
+        when :east
+          @orientation = :south
+        when :west
+          @orientation = :north
+      end
+      #commit
+    end
+  end 
 
   def position
   	[@x, @y, @orientation]
