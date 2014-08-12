@@ -3,7 +3,7 @@ class Car
 
   def initialize(x, y, orientation)
   	if ![:north, :east, :south, :west].include?(orientation)
-  		raise Exception('Invalid orientation.')
+  		raise ArgumentError.new('Invalid orientation.')
   	end
 
   	@x = x
