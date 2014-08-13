@@ -78,7 +78,7 @@ RSpec.describe Car do
   end
 
   it 'should not allow invalid starting orientations' do
-  	expect { Car.new(1, 1, :rubbish) }.to raise_error 
+  	expect { Car.new(1, 1, :rubbish) }.to raise_error('Invalid orientation.')
   end
 end
 
