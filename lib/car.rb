@@ -24,31 +24,29 @@ class Car
   	end
   end
 
-  def turn(direction)
-    if direction == :left
-      case @orientation
-        when :north
-          @orientation = :west
-        when :south
-          @orientation = :east
-        when :east
-          @orientation = :north
-        when :west
-          @orientation = :south
-      end
+  def turn_left
+    case @orientation
+      when :north
+        @orientation = :west
+      when :south
+        @orientation = :east
+      when :east
+        @orientation = :north
+      when :west
+        @orientation = :south
+    end
+  end
 
-    elsif direction == :right
-      case @orientation
-        when :north
-          @orientation = :east
-        when :south
-          @orientation = :west
-        when :east
-          @orientation = :south
-        when :west
-          @orientation = :north
-      end
-      #commit
+  def turn_right
+    case @orientation
+      when :north
+        @orientation = :east
+      when :south
+        @orientation = :west
+      when :east
+        @orientation = :south
+      when :west
+	      @orientation = :north
     end
   end 
 

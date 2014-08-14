@@ -84,7 +84,7 @@ RSpec.describe Car do
     context 'when a car starts at (1, 1), is pointing north and turns left' do 
     before(:each) do
       @d = Car.new(1, 1, :north)
-      @d.turn(:left)
+      @d.turn_left
     end
 
     it 'should move the car to (1, 1) and be pointing west' do
