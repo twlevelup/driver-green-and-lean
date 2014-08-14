@@ -3,9 +3,9 @@ require 'car'
 RSpec.describe Car do
   context 'when a car starts at (1, 1) and is pointing north' do
   	it 'should report its position as (1, 1) and be pointing north' do 
-	  	@d = Car.new(1, 1, :north)
+	  	@car = Car.new(1, 1, :north)
 
-  		expect(@d.position).to eq([1, 1, :north])
+  		expect(@car.position).to eq([1, 1, :north])
   	end
   end
 
@@ -19,11 +19,11 @@ RSpec.describe Car do
   }.each do |start, expectedEnd|
   	describe "when a car starts at (#{start[0]}, #{start[1]}) and is pointing #{start[2]}" do
 	  	it "it should move forward to (#{expectedEnd[0]}, #{expectedEnd[1]}), and still be pointing #{start[2]}" do
-				@d = Car.new(start[0], start[1], start[2])
+				@car = Car.new(start[0], start[1], start[2])
 
-		  	@d.move_forward
+		  	@car.move_forward
 
-		  	expect(@d.position).to eq([expectedEnd[0], expectedEnd[1], start[2]])
+		  	expect(@car.position).to eq([expectedEnd[0], expectedEnd[1], start[2]])
 			end
 		end
   end
@@ -32,15 +32,38 @@ RSpec.describe Car do
   	expect { Car.new(1, 1, :rubbish) }.to raise_error('Invalid orientation.')
   end
 
-    context 'when a car starts at (1, 1), is pointing north and turns left' do 
-    before(:each) do
-      @d = Car.new(1, 1, :north)
-      @d.turn_left
-    end
+  { 
+  	:north => :west,
+  	:east => :north,
+  	:south => :east,
+  	:west => :south
+  }.each do |initialDirection, expectedDirection| 
+  	describe "when a car is pointing #{initialDirection}" do
+  		it "after turning left and it should be facing #{expectedDirection}" do
+  			@car = Car.new(1, 1, initialDirection)
 
-    it 'should move the car to (1, 1) and be pointing west' do
-      expect(@d.position).to eq([1, 1, :west])
-    end
+  			@car.turn_left
+
+  			expect(@car.orientation).to eq(expectedDirection)
+  		end
+  	end
+  end
+
+  { 
+  	:north => :east,
+  	:east => :south,
+  	:south => :west,
+  	:west => :north
+  }.each do |initialDirection, expectedDirection| 
+  	describe "when a car is pointing #{initialDirection}" do
+  		it "after turning right and it should be facing #{expectedDirection}" do
+  			@car = Car.new(1, 1, initialDirection)
+
+  			@car.turn_right
+
+  			expect(@car.orientation).to eq(expectedDirection)
+  		end
+  	end
   end
 
 end
