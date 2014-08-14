@@ -39,7 +39,7 @@ RSpec.describe Car do
   	:west => :south
   }.each do |initialDirection, expectedDirection| 
   	describe "when a car is pointing #{initialDirection}" do
-  		it "after turning left and it should be facing #{expectedDirection}" do
+  		it "after turning left, it should be facing #{expectedDirection}" do
   			@car = Car.new(1, 1, initialDirection)
 
   			@car.turn_left
@@ -56,7 +56,7 @@ RSpec.describe Car do
   	:west => :north
   }.each do |initialDirection, expectedDirection| 
   	describe "when a car is pointing #{initialDirection}" do
-  		it "after turning right and it should be facing #{expectedDirection}" do
+  		it "after turning right, it should be facing #{expectedDirection}" do
   			@car = Car.new(1, 1, initialDirection)
 
   			@car.turn_right
