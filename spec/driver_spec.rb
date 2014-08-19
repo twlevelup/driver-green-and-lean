@@ -1,8 +1,9 @@
 require 'driver'
 
 RSpec.describe Driver do
-  it "should honk" do
-    d = Driver.new
-    expect(d.honk).to eq('honk honk toot toot beep beep')
+  it "should honk when pressed" do
+    d = Driver.new "-" #arrange
+     #act
+    expect(d.honk).to eq('honk honk toot toot beep beep') #assert
   end
 end
