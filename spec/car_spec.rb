@@ -33,37 +33,27 @@ RSpec.describe Car do
   end
 
   { 
-  	:north => :west,
-  	:east => :north,
-  	:south => :east,
-  	:west => :south
-  }.each do |initialDirection, expectedDirection| 
+  	:north => {:left => :west, :right => :east},
+  	:east => {:left => :north, :right => :south},
+  	:south => {:left => :east, :right => :west},
+  	:west => {:left => :south, :right => :north}
+  }.each do |initialDirection, expectedDirections| 
   	describe "when a car is pointing #{initialDirection}" do
-  		it "after turning left, it should be facing #{expectedDirection}" do
-  			@car = Car.new(1, 1, initialDirection)
+  		before :each do 
+				@car = Car.new(1, 1, initialDirection)
+  		end
 
+  		it "after turning left, it should be facing #{expectedDirections[:left]}" do
   			@car.turn_left
 
-  			expect(@car.orientation).to eq(expectedDirection)
+  			expect(@car.orientation).to eq(expectedDirections[:left])
   		end
-  	end
-  end
 
-  { 
-  	:north => :east,
-  	:east => :south,
-  	:south => :west,
-  	:west => :north
-  }.each do |initialDirection, expectedDirection| 
-  	describe "when a car is pointing #{initialDirection}" do
-  		it "after turning right, it should be facing #{expectedDirection}" do
-  			@car = Car.new(1, 1, initialDirection)
-
+  		it "after turning right, it should be facing #{expectedDirections[:right]}" do
   			@car.turn_right
 
-  			expect(@car.orientation).to eq(expectedDirection)
+  			expect(@car.orientation).to eq(expectedDirections[:right])
   		end
   	end
   end
-
 end
