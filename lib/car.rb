@@ -1,4 +1,9 @@
+require 'OutsideGridException'
+
 class Car
+	GRID_HEIGHT = 5
+	GRID_WIDTH = 8
+
 	attr_reader :x, :y, :orientation
 
   def initialize(x, y, orientation)
@@ -6,22 +11,38 @@ class Car
   		raise ArgumentError, 'Invalid orientation.'
   	end
 
+		validate_position(x, y, 'Starting position outside grid.') 
+
   	@x = x
   	@y = y
   	@orientation = orientation
   end
+
+  def validate_position(x, y, error_message)
+  	if x < 0 or y < 0 or y > GRID_HEIGHT or x > GRID_WIDTH
+			raise OutsideGridException, error_message
+  	end
+  end
     
   def move_forward
+  	desired_x = @x
+  	desired_y = @y
+
 		case @orientation
 	  	when :north
-				@y = @y + 1
+				desired_y += 1
 	  	when :south
-				@y = @y - 1
+				desired_y -= 1
 	  	when :east
-	  		@x = @x + 1
+	  		desired_x += 1
 	  	when :west
-	  		@x = @x - 1
+	  		desired_x -= 1
   	end
+
+  	validate_position(desired_x, desired_y, 'Taxi is not permitted to move outside the grid.') 
+
+  	@x = desired_x
+  	@y = desired_y
   end
 
   def move_backward

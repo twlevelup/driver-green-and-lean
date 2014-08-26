@@ -64,4 +64,32 @@ RSpec.describe Car do
   		end
   	end
   end
+
+  it 'should not allow starting positions west of the city' do
+  	expect { Car.new(-1, 0, :north) }.to raise_error('Starting position outside grid.')	
+  end
+
+  it 'should not allow starting positions south of the city' do
+  	expect { Car.new(0, -1, :north) }.to raise_error('Starting position outside grid.')	
+  end
+
+  it 'should not allow starting positions north of the city' do
+  	expect { Car.new(0, 6, :north) }.to raise_error('Starting position outside grid.')	
+  end
+
+  it 'should not allow starting positions east of the city' do
+  	expect { Car.new(9, 0, :north) }.to raise_error('Starting position outside grid.')	
+  end
+
+  describe 'should not allow moving forward out of the boundary' do
+  	it 'when on the north boundary' do
+	  	@car = Car.new(6, 5, :north) 
+	  	expect { @car.move_forward }.to raise_error('Taxi is not permitted to move outside the grid.')	
+	  end
+
+	  it 'when on the east boundary' do
+	  	@car = Car.new(8, 4, :east) 
+	  	expect { @car.move_forward }.to raise_error('Taxi is not permitted to move outside the grid.')	
+	  end
+  end
 end

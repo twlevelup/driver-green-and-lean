@@ -1,0 +1,3 @@
+class OutsideGridException < Exception
+
+end
