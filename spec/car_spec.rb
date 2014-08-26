@@ -1,6 +1,6 @@
 require 'car'
 
-RSpec.describe Car do
+describe Car do
   context 'when a car starts at (1, 1) and is pointing north' do
   	it 'should report its position as (1, 1) and be pointing north' do 
 	  	@car = Car.new(1, 1, :north)
@@ -18,6 +18,7 @@ RSpec.describe Car do
   	[1, 1, :west] => {:forward => [0, 1], :backward => [2, 1]}
   }.each do |start, expectedEnd|
   	describe "when a car starts at (#{start[0]}, #{start[1]}) and is pointing #{start[2]}" do
+
   		before :each do
   			@car = Car.new(start[0], start[1], start[2])
   		end
