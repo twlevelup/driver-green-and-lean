@@ -10,39 +10,28 @@ RSpec.describe Car do
   end
 
   { 
-  	[1, 1, :north] => [1, 2],
-  	[1, 2, :north] => [1, 3],
-  	[1, 1, :south] => [1, 0],
-  	[1, 2, :south] => [1, 1],
-  	[1, 1, :east] => [2, 1],
-  	[1, 1, :west] => [0, 1]
+  	[1, 1, :north] => {:forward => [1, 2], :backward => [1, 0]},
+  	[1, 2, :north] => {:forward => [1, 3], :backward => [1, 1]},
+  	[1, 1, :south] => {:forward => [1, 0], :backward => [1, 2]},
+  	[1, 2, :south] => {:forward => [1, 1], :backward => [1, 3]},
+  	[1, 1, :east] => {:forward => [2, 1], :backward => [0, 1]},
+  	[1, 1, :west] => {:forward => [0, 1], :backward => [2, 1]}
   }.each do |start, expectedEnd|
   	describe "when a car starts at (#{start[0]}, #{start[1]}) and is pointing #{start[2]}" do
-	  	it "it should move forward to (#{expectedEnd[0]}, #{expectedEnd[1]}), and still be pointing #{start[2]}" do
-				@car = Car.new(start[0], start[1], start[2])
+  		before :each do
+  			@car = Car.new(start[0], start[1], start[2])
+  		end
 
-		  	@car.move_forward
+	  	it "it should move forward to (#{expectedEnd[:forward][0]}, #{expectedEnd[:forward][1]}), and still be pointing #{start[2]}" do
+				@car.move_forward
 
-		  	expect(@car.position).to eq([expectedEnd[0], expectedEnd[1], start[2]])
+		  	expect(@car.position).to eq([expectedEnd[:forward][0], expectedEnd[:forward][1], start[2]])
 			end
-		end
-  end
 
-	{ 
-  	[1, 1, :north] => [1, 0],
-  	[1, 2, :north] => [1, 1],
-  	[1, 1, :south] => [1, 2],
-  	[1, 2, :south] => [1, 3],
-  	[1, 1, :east] => [0, 1],
-  	[1, 1, :west] => [2, 1]
-  }.each do |start, expectedEnd|
-  	describe "when a car starts at (#{start[0]}, #{start[1]}) and is pointing #{start[2]}" do
-	  	it "it should move forward to (#{expectedEnd[0]}, #{expectedEnd[1]}), and still be pointing #{start[2]}" do
-				@car = Car.new(start[0], start[1], start[2])
+			it "it should move backward to (#{expectedEnd[:backward][0]}, #{expectedEnd[:backward][1]}), and still be pointing #{start[2]}" do
+				@car.move_backward
 
-		  	@car.move_backward
-
-		  	expect(@car.position).to eq([expectedEnd[0], expectedEnd[1], start[2]])
+		  	expect(@car.position).to eq([expectedEnd[:backward][0], expectedEnd[:backward][1], start[2]])
 			end
 		end
   end
