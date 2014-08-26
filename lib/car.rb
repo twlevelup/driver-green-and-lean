@@ -24,6 +24,19 @@ class Car
   	end
   end
 
+  def move_backward
+  	case @orientation
+	  	when :north
+  			@y = @y - 1
+		  when :south
+		  	@y = @y + 1
+		  when :east
+		  	@x = @x - 1
+		  when :west
+		  	@x = @x + 1
+	  end
+  end
+
   def turn_left
     case @orientation
       when :north

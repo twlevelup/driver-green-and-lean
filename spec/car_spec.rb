@@ -28,6 +28,25 @@ RSpec.describe Car do
 		end
   end
 
+	{ 
+  	[1, 1, :north] => [1, 0],
+  	[1, 2, :north] => [1, 1],
+  	[1, 1, :south] => [1, 2],
+  	[1, 2, :south] => [1, 3],
+  	[1, 1, :east] => [0, 1],
+  	[1, 1, :west] => [2, 1]
+  }.each do |start, expectedEnd|
+  	describe "when a car starts at (#{start[0]}, #{start[1]}) and is pointing #{start[2]}" do
+	  	it "it should move forward to (#{expectedEnd[0]}, #{expectedEnd[1]}), and still be pointing #{start[2]}" do
+				@car = Car.new(start[0], start[1], start[2])
+
+		  	@car.move_backward
+
+		  	expect(@car.position).to eq([expectedEnd[0], expectedEnd[1], start[2]])
+			end
+		end
+  end
+
   it 'should not allow invalid starting orientations' do
   	expect { Car.new(1, 1, :rubbish) }.to raise_error('Invalid orientation.')
   end
