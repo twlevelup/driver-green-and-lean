@@ -1,7 +1,7 @@
 require "operator"
 
 describe Operator do
-	Context 'operator is asked to enter a starting location' do
+	context 'operator is asked to enter a starting location' do
 		it 'should accept the input from operator and display the inputs' do
 			@operator = Operator.new
 
