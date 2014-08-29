@@ -6,22 +6,24 @@ class Car
 
 	attr_reader :x, :y, :orientation
 
+  def self.valid_position?(x, y)
+  	if x < 0 or y < 0 or y > GRID_HEIGHT or x > GRID_WIDTH
+			return false
+		else
+			return true
+  	end
+  end
+
   def initialize(x, y, orientation)
   	if ![:north, :east, :south, :west].include?(orientation)
   		raise ArgumentError, 'Invalid orientation.'
   	end
 
-		Car.validate_position(x, y, 'Starting position outside grid.') 
+		validate_position(x, y, 'Starting position outside grid.') 
 
   	@x = x
   	@y = y
   	@orientation = orientation
-  end
-
-  def self.validate_position(x, y, error_message)
-  	if x < 0 or y < 0 or y > GRID_HEIGHT or x > GRID_WIDTH
-			raise OutsideGridException, error_message
-  	end
   end
     
   def move_forward
@@ -78,9 +80,15 @@ class Car
 	  		desired_x -= increment
   	end
 
-  	Car.validate_position(desired_x, desired_y, 'Taxi is not permitted to move outside the grid.') 
+  	validate_position(desired_x, desired_y, 'Taxi is not permitted to move outside the grid.') 
 
   	@x = desired_x
   	@y = desired_y
+  end
+
+  def validate_position(x, y, error_message)
+  	if not Car.valid_position?(x, y) 
+			raise OutsideGridException, error_message
+  	end
   end
 end

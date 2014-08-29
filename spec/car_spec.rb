@@ -75,7 +75,7 @@ RSpec.describe Car do
 	  	it "(#{position[0]}, #{position[1]}) should be reported as an invalid position" do
 		  	expected_error_message = 'Error message'
 
-		  	expect { Car.validate_position(position[0], position[1], expected_error_message) }.to raise_error(expected_error_message)	
+		  	expect(Car.valid_position?(position[0], position[1])).to be false
 		  end
 
 		  it "(#{position[0]}, #{position[1]}) should be reported as an invalid starting position" do
