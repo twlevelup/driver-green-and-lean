@@ -46,16 +46,24 @@ class Car
   end
 
   def move_backward
+  	desired_x = @x
+  	desired_y = @y
+
   	case @orientation
 	  	when :north
-  			@y = @y - 1
+  			desired_y -= 1
 		  when :south
-		  	@y = @y + 1
+		  	desired_y += 1
 		  when :east
-		  	@x = @x - 1
+		  	desired_x -= 1
 		  when :west
-		  	@x = @x + 1
+		  	desired_x += 1
 	  end
+
+	  validate_position(desired_x, desired_y, 'Taxi is not permitted to move outside the grid.') 
+
+  	@x = desired_x
+  	@y = desired_y
   end
 
   def turn_left
