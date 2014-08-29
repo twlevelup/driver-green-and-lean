@@ -11,14 +11,14 @@ class Car
   		raise ArgumentError, 'Invalid orientation.'
   	end
 
-		validate_position(x, y, 'Starting position outside grid.') 
+		Car.validate_position(x, y, 'Starting position outside grid.') 
 
   	@x = x
   	@y = y
   	@orientation = orientation
   end
 
-  def validate_position(x, y, error_message)
+  def self.validate_position(x, y, error_message)
   	if x < 0 or y < 0 or y > GRID_HEIGHT or x > GRID_WIDTH
 			raise OutsideGridException, error_message
   	end
@@ -78,7 +78,7 @@ class Car
 	  		desired_x -= increment
   	end
 
-  	validate_position(desired_x, desired_y, 'Taxi is not permitted to move outside the grid.') 
+  	Car.validate_position(desired_x, desired_y, 'Taxi is not permitted to move outside the grid.') 
 
   	@x = desired_x
   	@y = desired_y
