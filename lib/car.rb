@@ -25,45 +25,11 @@ class Car
   end
     
   def move_forward
-  	desired_x = @x
-  	desired_y = @y
-
-		case @orientation
-	  	when :north
-				desired_y += 1
-	  	when :south
-				desired_y -= 1
-	  	when :east
-	  		desired_x += 1
-	  	when :west
-	  		desired_x -= 1
-  	end
-
-  	validate_position(desired_x, desired_y, 'Taxi is not permitted to move outside the grid.') 
-
-  	@x = desired_x
-  	@y = desired_y
+  	move_distance(1)
   end
 
   def move_backward
-  	desired_x = @x
-  	desired_y = @y
-
-  	case @orientation
-	  	when :north
-  			desired_y -= 1
-		  when :south
-		  	desired_y += 1
-		  when :east
-		  	desired_x -= 1
-		  when :west
-		  	desired_x += 1
-	  end
-
-	  validate_position(desired_x, desired_y, 'Taxi is not permitted to move outside the grid.') 
-
-  	@x = desired_x
-  	@y = desired_y
+  	move_distance(-1)
   end
 
   def turn_left
@@ -94,5 +60,27 @@ class Car
 
   def position
   	[@x, @y, @orientation]
+  end
+
+  private
+  def move_distance(increment)
+  	desired_x = @x
+  	desired_y = @y
+
+		case @orientation
+	  	when :north
+				desired_y += increment
+	  	when :south
+				desired_y -= increment
+	  	when :east
+	  		desired_x += increment
+	  	when :west
+	  		desired_x -= increment
+  	end
+
+  	validate_position(desired_x, desired_y, 'Taxi is not permitted to move outside the grid.') 
+
+  	@x = desired_x
+  	@y = desired_y
   end
 end
