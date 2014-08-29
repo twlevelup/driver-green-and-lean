@@ -73,13 +73,26 @@ RSpec.describe Car do
 	  	[9, 0]
 	  ].each do |position|
 	  	it "(#{position[0]}, #{position[1]}) should be reported as an invalid position" do
-		  	expected_error_message = 'Error message'
-
 		  	expect(Car.valid_position?(position[0], position[1])).to be false
 		  end
 
 		  it "(#{position[0]}, #{position[1]}) should be reported as an invalid starting position" do
 		  	expect { @car = Car.new(position[0], position[1], :north) }.to raise_error('Starting position outside grid.')
+		  end
+	  end
+
+	  [
+	  	[0, 0],
+	  	[0, 5],
+	  	[8, 5],
+	  	[8, 0]
+	  ].each do |position|
+	  	it "(#{position[0]}, #{position[1]}) should be reported as a valid position" do
+		  	expect(Car.valid_position?(position[0], position[1])).to be true
+		  end
+
+		  it "(#{position[0]}, #{position[1]}) should be reported as a valid starting position" do
+		  	expect { @car = Car.new(position[0], position[1], :north) }.not_to raise_error
 		  end
 	  end
 	end
