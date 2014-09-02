@@ -1,31 +1,51 @@
 require "car"
 
+class String
+    def is_i?
+       !!(self =~ /\A[-+]?[0-9]+\z/)
+    end
+end
+
 class Operator 
 
-attr_reader :x, :y, :orientation
-		
-		def initialize
-
-			@x
-			@y
-			@orientation
-		end
-
-		def set_location 
+		def set_location
+		#1. read inputs 
 			puts "Please enter a car location and orientation"
 			STDOUT.flush
 
 			location = STDIN.gets.chomp
+		end
 
-			points = location.split(',')
+		def parse_position(text)
+			points = text.split(',')
 
-			@x = points[0]
-			@y = points[1]
-			@orientation = points[2]
+			if points.length != 3
+				return nil
+			elsif !points[0].is_i? or !points[1].is_i?
+				return nil
+			end
 
-			@x = @x.to_i
-			@y = @y.to_i
+			x = points[0].to_i
+			y = points[1].to_i
 
+			case points[2]
+				when 'N'
+					orientation = :north
+				when 'S'
+					orientation = :south
+				when 'E'
+					orientation = :east
+				when 'W'
+					orientation = :west
+				else
+					return nil
+			end
+
+			return [x, y, orientation]
+		end
+
+		def car_location
+			#3. act on car
 			@orientation = @orientation.intern
 
 			self.create_car(@x, @y, @orientation)
