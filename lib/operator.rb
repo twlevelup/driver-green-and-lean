@@ -1,45 +1,59 @@
 require "car"
 
 class Operator 
-
-attr_reader :x, :y, :orientation
 		
 		def initialize
 
-			@x
-			@y
-			@orientation
 		end
 
-		def set_location 
-			puts "Please enter a car location and orientation"
+		def set_location_instructions
+			puts "Please enter a car location and orientation and instructions"
 			STDOUT.flush
 
-			location = STDIN.gets.chomp
+			input = STDIN.gets.chomp
 
-			points = location.split(',')
+			x = @x.to_i
+			y = @y.to_i
 
-			@x = points[0]
-			@y = points[1]
-			@orientation = points[2]
+			orientation = @orientation.intern
 
-			@x = @x.to_i
-			@y = @y.to_i
-
-			@orientation = @orientation.intern
+			location = get_location(input)
 
 			self.create_car(@x, @y, @orientation)
 
-			[@x, @y, @orientation]
+			instructions = get_instruction(input)
 
 			end
-	 
+
+	 	def get_location input
+
+	 		points = input.split(/[\s,']/)
+
+	 		x = points[0].to_i
+			y = points[1].to_i
+			orientation = points[2].intern
+
+			[x, y, orientation]
+
+	 	end
+
+	 	def get_instruction input
+
+	 		points = input.split(/[\s,']/)
+
+	 		instructions = points[3]
+
+	 		instructions.split("")
+	 		
+	 	end
 
 		def create_car(x, y, orientation)
 
 			@car = Car.new(x, y, orientation)
 
 			puts "New car created : #{@car.position} " 
+
+			@car.position
 
 		end
 
@@ -57,7 +71,7 @@ attr_reader :x, :y, :orientation
 
 		end
 
-		def move_car?(instruction)
+		def move_car(instruction)
 
 			@instruction = instruction.intern
 
