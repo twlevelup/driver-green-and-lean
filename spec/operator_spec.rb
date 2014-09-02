@@ -33,4 +33,24 @@ describe Operator do
 			end
 		end
 	end
+
+	describe 'parsing instructions for car' do
+		{ 
+			'' => [],
+			'M' => [:move_forward],
+			'L' => [:turn_left], 
+			'B' => [:move_backward],
+			'R' => [:turn_right],
+			'MM' => [:move_forward, :move_forward],
+			'MR' => [:move_forward, :turn_right],
+		}.each do |input, expectedOutput|
+			it "should parse '#{input}' correctly" do
+				@operator = Operator.new
+
+				actual = @operator.parse_instruction(input)
+
+				expect(actual).to eq(expectedOutput)
+			end	
+		end
+	end
 end

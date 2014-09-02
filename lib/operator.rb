@@ -44,37 +44,19 @@ class Operator
 			return [x, y, orientation]
 		end
 
-		def car_location
-			#3. act on car
-			@orientation = @orientation.intern
-
-			self.create_car(@x, @y, @orientation)
-
-			[@x, @y, @orientation]
-
+		def parse_instruction(instructions)
+			instructions.split('').map do |instruction|
+				case instruction
+					when 'M'
+						:move_forward
+					when 'B'
+						:move_backward
+					when 'L'
+						:turn_left
+					when 'R'
+						:turn_right
+				end
 			end
-	 
-
-		def create_car(x, y, orientation)
-
-			@car = Car.new(x, y, orientation)
-
-			puts "New car created : #{@car.position} " 
-
-		end
-
-		def instruction_stack(car)
-
-			puts "Please enter instructions for car:"
-
-			instructions = STDIN.gets.chomp
-
-			moves = instructions.split("")
-
-			moves.each { |x| self.move_car?(x) }
-
-			@car.position
-
 		end
 
 		def move_car?(instruction)
