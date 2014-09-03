@@ -2,7 +2,7 @@ require "operator"
 
 
  describe Operator do
-	context 'operator is asked to enter a starting location' do
+	context 'operator is asked to enter a starting location and instructions' do
 
 		it 'should create a location for a new car created' do
 			@operator = Operator.new
@@ -17,7 +17,32 @@ require "operator"
 
 			expect(instruct).to eq([:M, :L, :M, :M, :R, :M])
 		end
+
+	{
+		'0,0,N MRMMMLM' => [3, 2, :north],
+		'2,3,W RMRMMLM' => [4, 5, :north],
+	}.each do |input, expectedEnd|
+
+		describe "given car location and parse instructions" do 
+
+			before :each do 
+				@operator = Operator.new 
+				location = @operator.get_position(input)
+				@car = @operator.create_car(location[0], location[1], location[2])
+			end
+
+			it "it should move car to [#{expectedEnd[0]}, #{expectedEnd[1]}] and pointing #{expectedEnd[2]}" do
+
+				@instructions = @operator.get_instruction(input)
+				move = @operator.move_car(@car, @instructions)
+				
+				expect(move).to eq(expectedEnd)
+			end	
+		end
+
 	end
+end
+
 end
 
 describe 'separating starting location from input' do
@@ -29,6 +54,25 @@ describe 'separating starting location from input' do
  		'4,3,N MLMMRM' => [4, 3, :north],
  	}.each do |input, expectedOutput|
 		it "should parse location from #{input} correctly" do
+			@operator = Operator.new
+
+			location = @operator.get_position(input)
+
+			expect(location).to eq(expectedOutput)
+		end
+
+  end
+end
+
+describe 'identifying non-numeric input in location' do
+ 	{
+ 		'0,O,N MLMMRM' => nil,
+ 		'!@,#$,W MLBBRM' => nil,
+ 		'..k,,3,E MLMMRM' => nil,
+ 		'..6k,#$$%,S MLMMRM' => nil,
+
+ 	}.each do |input, expectedOutput|
+		it "should parse location from #{input} and return nil" do
 			@operator = Operator.new
 
 			location = @operator.get_position(input)
@@ -58,8 +102,3 @@ describe 'separating instructions from input' do
  	end
 end
 
- # describe 'parsing instructions for car to move' do 
-	# {
-		
-	# }
- # end

@@ -1,5 +1,13 @@
 require "car"
 
+class String
+
+  def is_numeric?
+    true if Float(self) rescue false
+  end
+
+end
+
 class Operator 
 		
 		def initialize
@@ -26,6 +34,12 @@ class Operator
 
 	 		points = input.split(/[\s,']/)
 
+	 		if points.length != 4
+	 			return nil
+	 		elsif !points[0].is_numeric? or !points[1].is_numeric? 
+	 			return nil
+	 		end
+	 			
 	 		x = points[0].to_i
 			y = points[1].to_i
 			orient = points[2].intern
@@ -71,19 +85,17 @@ class Operator
 
 			@car = Car.new(x, y, orientation)
 
-			puts "New car created : #{@car.position} " 
-
 			@car.position
 
 		end
 
 
-		def move_car(instructions)
+		def move_car(car, instructions)
 
 			instructions.each do |instruction|
 
 			case instruction
-				when :F
+				when :M
 					@car.move_forward
 				when :B
 					@car.move_backward
@@ -96,6 +108,8 @@ class Operator
 			end
 
 			end 
+
+			@car.position
 		end
 
 end
