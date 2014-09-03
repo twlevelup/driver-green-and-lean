@@ -1,40 +1,65 @@
 require "operator"
 
 
-describe Operator do
+ describe Operator do
 	context 'operator is asked to enter a starting location' do
-		# it 'should accept the input from operator and display the inputs' do
-		# 	@operator = Operator.new
-
-		# 	expect(@operator.set_location).to eq([0, 0, :north])
-		# end
-
-		# it 'should accept list of instructions and move car to final destination case 1' do
-
-		# 	@operator = Operator.new
-
-		# 	@operator.set_location
-
-		# 	expect(@operator.instruction_stack(@car)).to eq([3, 2, :north])
-		# end
 
 		it 'should create a location for a new car created' do
 			@operator = Operator.new
-			# @operator.create_car(0, 0, N)
+
 			expect(@operator.create_car(0, 0, :north)).to eq([0, 0, :north])
 		end
-
-		it 'should split the input from console into variables' do
-			@operator = Operator.new
-
-			expect(@operator.get_location("0,0,N MLMMRM")).to eq([0, 0, :N])
-		end
-
+ 
 		it 'should return instructions' do
 			@operator = Operator.new 
 
-			expect(@operator.get_instruction("0,0,N MLMMRM")).to eq([:M, :L, :M, :M, :R, :M])
-		end
+			instruct = @operator.get_instruction("0,0,N MLMMRM")
 
+			expect(instruct).to eq([:M, :L, :M, :M, :R, :M])
+		end
 	end
 end
+
+describe 'separating starting location from input' do
+ 	{
+ 		'0,0,N MLMMRM' => [0, 0, :north],
+ 		'2,3,W MLBBRM' => [2, 3, :west],
+ 		'1,3,E MLMMRM' => [1, 3, :east],
+ 		'4,1,S MLMMRM' => [4, 1, :south],
+ 		'4,3,N MLMMRM' => [4, 3, :north],
+ 	}.each do |input, expectedOutput|
+		it "should parse location from #{input} correctly" do
+			@operator = Operator.new
+
+			location = @operator.get_position(input)
+
+			expect(location).to eq(expectedOutput)
+		end
+
+  end
+end
+
+describe 'separating instructions from input' do
+ 	{
+ 		'0,0,N,M LMBRBM' => nil,
+ 		'0,0,N MLMMRM' => [:M, :L, :M, :M, :R, :M],
+ 		'2,3,W MLBBRM' => [:M, :L, :B, :B, :R, :M],
+ 		'1,3,E MLMMRM' => [:M, :L, :M, :M, :R, :M],
+ 		'4,1,S MRMBMRMB' => [:M, :R, :M, :B, :M, :R, :M, :B],
+ 	}.each do |input, expectedOutput|
+		it "should parse instructions stack from #{input} correctly" do
+			@operator = Operator.new
+
+			instructions = @operator.get_instruction(input)
+
+			expect(instructions).to eq(expectedOutput)
+		end
+
+ 	end
+end
+
+ # describe 'parsing instructions for car to move' do 
+	# {
+		
+	# }
+ # end

@@ -12,26 +12,37 @@ class Operator
 
 			input = STDIN.gets.chomp
 
-			x = @x.to_i
-			y = @y.to_i
-
-			orientation = @orientation.intern
-
 			location = get_location(input)
 
-			self.create_car(@x, @y, @orientation)
+			self.create_car(location[0], location[1], location[2])
 
 			instructions = get_instruction(input)
 
-			end
+			move_car(instructions) 
 
-	 	def get_location input
+		end
+
+	 	def get_position input
 
 	 		points = input.split(/[\s,']/)
 
 	 		x = points[0].to_i
 			y = points[1].to_i
-			orientation = points[2].intern
+			orient = points[2].intern
+
+			case orient
+
+				when :N
+					orientation = :north
+				when :S
+					orientation = :south
+				when :E
+					orientation = :east
+				when :W
+					orientation = :west
+				else 
+					return nil
+			end						
 
 			[x, y, orientation]
 
@@ -39,12 +50,21 @@ class Operator
 
 	 	def get_instruction input
 
+
 	 		points = input.split(/[\s,']/)
 
-	 		instructions = points[3]
+	 		if points.length != 4
 
-	 		instructions.split("")
-	 		
+	 			return nil
+
+	 		end
+
+	 		instructions = points[3].split('')
+
+	 		instructions = instructions.map &:to_sym 
+
+	 		return instructions 
+
 	 	end
 
 		def create_car(x, y, orientation)
@@ -57,25 +77,12 @@ class Operator
 
 		end
 
-		def instruction_stack(car)
 
-			puts "Please enter instructions for car:"
+		def move_car(instructions)
 
-			instructions = STDIN.gets.chomp
+			instructions.each do |instruction|
 
-			moves = instructions.split("")
-
-			moves.each { |x| self.move_car?(x) }
-
-			@car.position
-
-		end
-
-		def move_car(instruction)
-
-			@instruction = instruction.intern
-
-			case @instruction
+			case instruction
 				when :F
 					@car.move_forward
 				when :B
@@ -84,7 +91,11 @@ class Operator
 					@car.turn_left
 				when :R
 					@car.turn_right
-				end
+				else
+					nil
+			end
+
+			end 
 		end
 
 end
