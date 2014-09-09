@@ -40,8 +40,8 @@ class Operator
 	 			return nil
 	 		end
 	 			
-	 		x = points[0].to_i
-			y = points[1].to_i
+	 		x = points[0].to_f
+			y = points[1].to_f
 			orient = points[2].intern
 
 			case orient
