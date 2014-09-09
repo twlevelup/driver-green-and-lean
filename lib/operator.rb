@@ -2,7 +2,7 @@ require "car"
 
 class String
 
-  def is_numeric?
+  def numeric?
     true if Float(self) rescue false
   end
 
@@ -36,7 +36,7 @@ class Operator
 
 	 		if points.length != 4
 	 			return nil
-	 		elsif !points[0].is_numeric? or !points[1].is_numeric? 
+	 		elsif !points[0].numeric? or !points[1].numeric? 
 	 			return nil
 	 		end
 	 			
@@ -91,6 +91,7 @@ class Operator
 
 
 		def move_car(car, instructions)
+
 
 			instructions.each do |instruction|
 

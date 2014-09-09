@@ -23,7 +23,7 @@ require "operator"
 		'2,3,W RMRMMLM' => [4, 5, :north],
 	}.each do |input, expectedEnd|
 
-		describe "given car location and parse instructions" do 
+		describe "given car location and instructions" do 
 
 			before :each do 
 				@operator = Operator.new 
