@@ -22,7 +22,7 @@ class Operator
 
 			location = get_location(input)
 
-			self.create_car(location[0], location[1], location[2])
+			create_car(location[0], location[1], location[2])
 
 			instructions = get_instruction(input)
 

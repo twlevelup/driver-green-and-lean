@@ -23,7 +23,7 @@ require "operator"
 		'2,3,W RMRMMLM' => [4, 5, :north],
 	}.each do |input, expectedEnd|
 
-		describe "given car location and instructions" do 
+		describe "given car location and instructions #{input}" do 
 
 			before :each do 
 				@operator = Operator.new 
@@ -43,7 +43,6 @@ require "operator"
 	end
 end
 
-end
 
 describe 'separating starting location from input' do
  	{
@@ -53,7 +52,7 @@ describe 'separating starting location from input' do
  		'4,1,S MLMMRM' => [4, 1, :south],
  		'4,3,N MLMMRM' => [4, 3, :north],
  	}.each do |input, expectedOutput|
-		it "should parse location from #{input} correctly" do
+		it "should parse location from #{input} and return #{expectedOutput}" do
 			@operator = Operator.new
 
 			location = @operator.get_position(input)
@@ -91,7 +90,7 @@ describe 'separating instructions from input' do
  		'1,3,E MLMMRM' => [:M, :L, :M, :M, :R, :M],
  		'4,1,S MRMBMRMB' => [:M, :R, :M, :B, :M, :R, :M, :B],
  	}.each do |input, expectedOutput|
-		it "should parse instructions stack from #{input} correctly" do
+		it "should parse instructions stack from #{input} and return #{expectedOutput}" do
 			@operator = Operator.new
 
 			instructions = @operator.get_instruction(input)
@@ -100,5 +99,7 @@ describe 'separating instructions from input' do
 		end
 
  	end
+end
+
 end
 
