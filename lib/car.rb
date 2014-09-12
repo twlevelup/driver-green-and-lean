@@ -55,7 +55,14 @@ class Car
   end
 
   def perform_commands(commands)
-
+  	commands.each do |e|  
+  		case e
+	  		when :move_forward
+	  			move_forward
+	  		when :move_backward
+	  			move_backward
+  		end
+  	end
   end
 
   private
