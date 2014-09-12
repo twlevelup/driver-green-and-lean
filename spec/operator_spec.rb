@@ -1,7 +1,7 @@
 require "operator"
 
 describe Operator do
-	describe 'parsing starting location' do
+	describe 'when parsing a starting location and orientation' do
 		{ 
 			'0,0,N' => [0, 0, :north],
 			'0,0,S' => [0, 0, :south],
@@ -32,7 +32,7 @@ describe Operator do
 		end
 	end
 
-	describe 'parsing instructions for car' do
+	describe 'when parsing instructions for a car' do
 		{ 
 			'' => [],
 			'M' => [:move_forward],
@@ -64,7 +64,7 @@ describe Operator do
 		end
 	end
 
-	describe 'parsing a command' do
+	describe 'when parsing a command' do
 		{
 			'1,2,S MLB' => [[1, 2, :south], [:move_forward, :turn_left, :move_backward]],
 			'3,5,W  R' => [[3, 5, :west], [:turn_right]],
@@ -78,5 +78,18 @@ describe Operator do
 				expect(actual).to eq(expectedOutput)
 			end
 		end
+
+		[
+			'',
+			'1,2,S',
+			'1,2,S '
+		].each do |badInput|
+			it "should report '#{badInput}' as invalid" do
+				@operator = Operator.new
+
+				expect { @operator.parse_command(badInput) }.to raise_error(InvalidInputException)
+			end
+		end
+
 	end
 end

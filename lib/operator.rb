@@ -11,6 +11,10 @@ class Operator
 		def parse_command(text)
 			parts = text.split(' ')
 
+			if parts.length != 2
+				raise InvalidInputException, "Command is not in the required format."
+			end
+
 			position = parse_position parts[0]
 			commands = parse_instruction parts[1]
 
