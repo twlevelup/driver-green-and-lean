@@ -8,63 +8,76 @@ class String
 end
 
 class Operator 
-		def parse_command(text)
-			parts = text.split(' ')
+	ORIENTATION_NAMES_TO_SYMBOLS = {
+		'N' => :north,
+		'S' => :south,
+		'E' => :east,
+		'W' => :west
+	}
 
-			if parts.length != 2
-				raise InvalidInputException, "Command is not in the required format."
-			end
+	def parse_command(text)
+		parts = text.split(' ')
 
-			position = parse_position parts[0]
-			commands = parse_instruction parts[1]
-
-			[position, commands]
+		if parts.length != 2
+			raise InvalidInputException, "Command is not in the required format."
 		end
 
-		def parse_position(text)
-			points = text.split(',')
+		position = parse_position parts[0]
+		instructions = parse_instruction parts[1]
 
-			if points.length != 3
-				raise InvalidInputException, "Starting position and orientation is not in a recognised format."
-			elsif !points[0].is_i? or !points[1].is_i?
-				raise InvalidInputException, "Starting position must be specifed as two whole numbers."
-			end
+		[position, instructions]
+	end
 
-			x = points[0].to_i
-			y = points[1].to_i
+	def parse_position(text)
+		points = text.split(',')
 
-			case points[2]
-				when 'N'
-					orientation = :north
-				when 'S'
-					orientation = :south
-				when 'E'
-					orientation = :east
-				when 'W'
-					orientation = :west
-				else
-					raise InvalidInputException, "Starting orientation '#{orientation}' is not recognised."
-			end
-
-			return [x, y, orientation]
+		if points.length != 3
+			raise InvalidInputException, "Starting position and orientation is not in a recognised format."
+		elsif !points[0].is_i? or !points[1].is_i?
+			raise InvalidInputException, "Starting position must be specifed as two whole numbers."
 		end
 
-		def parse_instruction(instructions)
-			instructions_map = {
-				'M' => :move_forward,
-				'B' => :move_backward,
-				'L' => :turn_left,
-				'R' => :turn_right
-			}
+		x = points[0].to_i
+		y = points[1].to_i
 
-			instructions.split('').map do |instruction|
-				instruction.upcase!
+		if ORIENTATION_NAMES_TO_SYMBOLS.has_key?(points[2])
+			orientation = ORIENTATION_NAMES_TO_SYMBOLS[points[2]]
+		else
+			raise InvalidInputException, "Starting orientation '#{points[2]}' is not recognised."
+		end
 
-				if instructions_map.has_key?(instruction)
-					instructions_map[instruction]
-				else
-					raise InvalidInputException, "Instruction '#{instruction}' is not recognised."
-				end
+		[x, y, orientation]
+	end
+
+	def parse_instruction(instructions)
+		instructions_map = {
+			'M' => :move_forward,
+			'B' => :move_backward,
+			'L' => :turn_left,
+			'R' => :turn_right
+		}
+
+		instructions.split('').map do |instruction|
+			instruction.upcase!
+
+			if instructions_map.has_key?(instruction)
+				instructions_map[instruction]
+			else
+				raise InvalidInputException, "Instruction '#{instruction}' is not recognised."
 			end
 		end
+	end
+
+	def run_input(input)
+		parse_result = parse_command(input)
+		position = parse_result[0]
+		instructions = parse_result[1]
+
+		car = Car.new(position[0], position[1], position[2])
+		car.perform_commands(instructions)
+
+		user_friendly_orientation = ORIENTATION_NAMES_TO_SYMBOLS.invert[car.orientation]
+
+		"#{car.x},#{car.y},#{user_friendly_orientation}"
+	end
 end

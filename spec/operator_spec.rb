@@ -90,6 +90,22 @@ describe Operator do
 				expect { @operator.parse_command(badInput) }.to raise_error(InvalidInputException)
 			end
 		end
+	end
+
+	describe 'when running a user command' do 
+		{
+			'0,0,N MRMMMLM' => '3,2,N',
+			'2,3,W RMRMMLM' => '4,5,N',
+			'1,3,E MRMR' => '2,2,W'
+		}.each do |input, expectedOutput|
+			it "should respond to the input '#{input}' with the response '#{expectedOutput}'" do 
+				@operator = Operator.new
+
+				actualOutput = @operator.run_input(input)
+
+				expect(actualOutput).to eq(expectedOutput)
+			end
+		end
 
 	end
 end
