@@ -36,18 +36,20 @@ class Operator
 		end
 
 		def parse_instruction(instructions)
+			instructions_map = {
+				'M' => :move_forward,
+				'B' => :move_backward,
+				'L' => :turn_left,
+				'R' => :turn_right
+			}
+
 			instructions.split('').map do |instruction|
-				case instruction.upcase
-					when 'M'
-						:move_forward
-					when 'B'
-						:move_backward
-					when 'L'
-						:turn_left
-					when 'R'
-						:turn_right
-					else 
-						return nil
+				instruction.upcase!
+
+				if instructions_map.has_key?(instruction)
+					instructions_map[instruction]
+				else
+					return nil
 				end
 			end
 		end
