@@ -65,4 +65,56 @@ describe Car do
   		end
   	end
   end
+
+  describe 'when checking positions' do
+	  [
+	  	[-1, 0],
+	  	[0, -1],
+	  	[0, 6],
+	  	[9, 0]
+	  ].each do |position|
+	  	it "(#{position[0]}, #{position[1]}) should be reported as an invalid starting position" do
+		  	expect { @car = Car.new(position[0], position[1], :north) }.to raise_error('Starting position outside grid.')
+		  end
+	  end
+
+	  [
+	  	[0, 0],
+	  	[0, 5],
+	  	[8, 5],
+	  	[8, 0]
+	  ].each do |position|
+	  	it "(#{position[0]}, #{position[1]}) should be reported as a valid starting position" do
+		  	expect { @car = Car.new(position[0], position[1], :north) }.not_to raise_error
+		  end
+	  end
+	end
+
+  describe 'should not allow moving forwards out of the boundary' do
+	  [
+	  	[6, 5, :north],
+	  	[8, 4, :east],
+	  	[3, 0, :south],
+	  	[0, 2, :west]
+	  ].each do |position|
+			it "when on the #{position[2]} boundary" do
+		  	@car = Car.new(position[0], position[1], position[2]) 
+		  	expect { @car.move_forward }.to raise_error('Taxi is not permitted to move outside the grid.')	
+		  end
+	  end
+  end
+
+  describe 'should not allow moving backwards out of the boundary' do
+	  {
+	  	[6, 5, :south] => :north,
+	  	[8, 4, :west] => :east,
+	  	[3, 0, :north] => :south,
+	  	[0, 2, :east] => :west
+	  }.each do |position, edge|
+			it "when on the #{edge} boundary" do
+		  	@car = Car.new(position[0], position[1], position[2]) 
+		  	expect { @car.move_backward }.to raise_error('Taxi is not permitted to move outside the grid.')	
+		  end
+	  end
+  end
 end
