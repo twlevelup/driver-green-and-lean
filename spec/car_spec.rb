@@ -71,7 +71,8 @@ describe Car do
     [0, 0, :north, [:move_forward]] => [0, 1, :north],
     [0, 4, :north, [:move_backward]] => [0, 3, :north],
     [0, 0, :south, [:turn_left]] => [0, 0, :east],
-    [0, 0, :south, [:turn_right]] => [0, 0, :west]
+    [0, 0, :south, [:turn_right]] => [0, 0, :west],
+    [0, 0, :north, [:move_forward, :turn_left]] => [0, 1, :west],
   }.each do |input, expectedEnd|
     describe "when a car starts at #{input[0]}, #{input[1]} and is pointing #{input[2]}" do
       it "should move to #{expectedEnd[0]}, #{expectedEnd[1]} and be pointing #{expectedEnd[2]} after performing the list of commands: #{input[3]}" do

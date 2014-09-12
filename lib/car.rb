@@ -56,16 +56,7 @@ class Car
 
   def perform_commands(commands)
   	commands.each do |e|  
-  		case e
-	  		when :move_forward
-	  			move_forward
-	  		when :move_backward
-	  			move_backward
-	  		when :turn_left
-	  			turn_left
-	  		when :turn_right
-	  			turn_right
-  		end
+  		send e
   	end
   end
 
