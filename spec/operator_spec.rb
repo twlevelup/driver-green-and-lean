@@ -107,5 +107,21 @@ describe Operator do
 			end
 		end
 
+		it 'invalid input should result in help information being displayed' do
+			@operator = Operator.new
+
+			actualOutput = @operator.run_input('blerg')
+
+			expect(actualOutput).to include("Enter your command in the format")
+		end
+
+		it 'attempting to move a taxi outside the grid should show a warning message and the position at which the taxi stopped' do
+			@operator = Operator.new
+
+			actualOutput = @operator.run_input('2,1,S MM')
+
+			expect(actualOutput).to include("The taxi stopped before completing all commands because it reached the boundary of the CBD.")
+			expect(actualOutput).to include("2,0,S")
+		end
 	end
 end

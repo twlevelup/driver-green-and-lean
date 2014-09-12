@@ -69,13 +69,29 @@ class Operator
 	end
 
 	def run_input(input)
-		parse_result = parse_command(input)
-		position = parse_result[0]
-		instructions = parse_result[1]
+		begin
+			parse_result = parse_command(input)
+			position = parse_result[0]
+			instructions = parse_result[1]
 
-		car = Car.new(position[0], position[1], position[2])
-		car.perform_commands(instructions)
+			car = Car.new(position[0], position[1], position[2])
+			car.perform_commands(instructions)
 
+			format_position_for_user(car)
+
+		rescue InvalidInputException => e
+			"Invalid input: #{e.message}\n" +
+			"\n"+
+			"Enter your command in the format (x),(y),(orientation) (commands), for example: 1,2,N FFRFFLB"
+
+		rescue OutsideGridException => e
+			"The taxi stopped before completing all commands because it reached the boundary of the CBD.\n"+
+			format_position_for_user(car)
+		end
+	end
+
+	private
+	def format_position_for_user(car)
 		user_friendly_orientation = ORIENTATION_NAMES_TO_SYMBOLS.invert[car.orientation]
 
 		"#{car.x},#{car.y},#{user_friendly_orientation}"
