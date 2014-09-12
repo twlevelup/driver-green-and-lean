@@ -7,15 +7,6 @@ class String
 end
 
 class Operator 
-
-		def set_location
-		#1. read inputs 
-			puts "Please enter a car location and orientation"
-			STDOUT.flush
-
-			location = STDIN.gets.chomp
-		end
-
 		def parse_position(text)
 			points = text.split(',')
 
@@ -58,21 +49,4 @@ class Operator
 				end
 			end
 		end
-
-		def move_car?(instruction)
-
-			@instruction = instruction.intern
-
-			case @instruction
-				when :F
-					@car.move_forward
-				when :B
-					@car.move_backward
-				when :L
-					@car.turn_left
-				when :R
-					@car.turn_right
-				end
-		end
-
 end
