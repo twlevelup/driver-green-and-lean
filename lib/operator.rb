@@ -37,7 +37,7 @@ class Operator
 
 		def parse_instruction(instructions)
 			instructions.split('').map do |instruction|
-				case instruction
+				case instruction.upcase
 					when 'M'
 						:move_forward
 					when 'B'
@@ -46,6 +46,8 @@ class Operator
 						:turn_left
 					when 'R'
 						:turn_right
+					else 
+						return nil
 				end
 			end
 		end

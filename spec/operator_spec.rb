@@ -8,7 +8,7 @@ describe Operator do
 			'1,2,E' => [1, 2, :east], 
 			'1,2,W' => [1, 2, :west],
 		}.each do |input, expectedOutput|
-			it "should parse '#{input}' correctly" do
+			it "should parse '#{input}' as #{expectedOutput}" do
 				@operator = Operator.new
 
 				actual = @operator.parse_position(input)
@@ -24,7 +24,7 @@ describe Operator do
 			'1.5,2.2,S',
 			'a, B, w'
 		].each do |badInput| 
-			it "should correctly report '#{badInput}' as invalid" do
+			it "should report '#{badInput}' as invalid" do
 				@operator = Operator.new
 
 				actual = @operator.parse_position(badInput)
@@ -43,14 +43,28 @@ describe Operator do
 			'R' => [:turn_right],
 			'MM' => [:move_forward, :move_forward],
 			'MR' => [:move_forward, :turn_right],
+			'm' => [:move_forward]
 		}.each do |input, expectedOutput|
-			it "should parse '#{input}' correctly" do
+			it "should parse '#{input}' as #{expectedOutput}" do
 				@operator = Operator.new
 
 				actual = @operator.parse_instruction(input)
 
 				expect(actual).to eq(expectedOutput)
 			end	
+		end
+
+		[
+			'x',
+			'M,M'
+		].each do |badInput| 
+			it "should report '#{badInput}' as invalid" do
+				@operator = Operator.new
+
+				actual = @operator.parse_instruction(badInput)
+
+				expect(actual).to eq(nil)
+			end
 		end
 	end
 end
