@@ -85,6 +85,21 @@ describe Car do
     end
   end
 
+  describe "when performing a list of commands" do
+    it "should not allow invalid commands" do 
+      @car = Car.new(0, 0, :north)
+
+      expect { @car.perform_commands([:rubbish]) }.to raise_error(InvalidCommandException)
+    end
+
+    it "should not move the car if the list of commands contains an invalid command" do
+      @car = Car.new(0, 0, :north)
+
+      expect { @car.perform_commands([:move_forward, :rubbish]) }.to raise_error(InvalidCommandException)
+      expect(@car.position).to eq([0, 0, :north])
+    end
+  end
+
   describe 'when checking positions' do
 	  [
 	  	[-1, 0],

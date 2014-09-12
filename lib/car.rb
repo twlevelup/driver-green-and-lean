@@ -1,4 +1,5 @@
 require 'OutsideGridException'
+require 'InvalidCommandException'
 require 'grid'
 
 class Car
@@ -55,6 +56,12 @@ class Car
   end
 
   def perform_commands(commands)
+  	commands.each do |e|
+  		if not respond_to?(e)
+  			raise InvalidCommandException, "Invalid command in list: #{e}"
+  		end
+  	end
+
   	commands.each do |e|  
   		send e
   	end
