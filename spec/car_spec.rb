@@ -65,4 +65,18 @@ describe Car do
   		end
   	end
   end
+
+  {
+    [0, 0, :north, []] => [0, 0, :north]
+  }.each do |input, expectedEnd|
+    describe "when a car starts at #{input[0]}, #{input[1]} and is pointing #{input[2]}" do
+      it "should move to #{expectedEnd[0]}, #{expectedEnd[1]} after performing the list of commands: #{input[3]}" do
+        @car = Car.new(input[0], input[1], input[2])
+
+        @car.perform_commands(input[3])
+
+        expect(@car.position).to eq(expectedEnd)
+      end
+    end
+  end
 end

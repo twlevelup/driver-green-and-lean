@@ -66,4 +66,8 @@ class Car
   def position
   	[@x, @y, @orientation]
   end
+
+  def perform_commands(commands)
+
+  end
 end
