@@ -27,9 +27,7 @@ describe Operator do
 			it "should report '#{badInput}' as invalid" do
 				@operator = Operator.new
 
-				actual = @operator.parse_position(badInput)
-
-				expect(actual).to eq(nil)
+				expect { @operator.parse_position(badInput) }.to raise_error(InvalidInputException)
 			end
 		end
 	end
@@ -61,9 +59,23 @@ describe Operator do
 			it "should report '#{badInput}' as invalid" do
 				@operator = Operator.new
 
-				actual = @operator.parse_instruction(badInput)
+				expect { @operator.parse_instruction(badInput) }.to raise_error(InvalidInputException)
+			end
+		end
+	end
 
-				expect(actual).to eq(nil)
+	describe 'parsing a command' do
+		{
+			'1,2,S MLB' => [[1, 2, :south], [:move_forward, :turn_left, :move_backward]],
+			'3,5,W  R' => [[3, 5, :west], [:turn_right]],
+			' 4,6,N BMMML' => [[4, 6, :north], [:move_backward, :move_forward, :move_forward, :move_forward, :turn_left]]
+		}.each do |input, expectedOutput|
+			it "should parse '#{input}' as a car starting at (#{expectedOutput[0][0]}, #{expectedOutput[0][1]}), pointing #{expectedOutput[0][2]} and having the list of commands #{expectedOutput[1]}" do
+				@operator = Operator.new
+
+				actual = @operator.parse_command(input)
+
+				expect(actual).to eq(expectedOutput)
 			end
 		end
 	end
