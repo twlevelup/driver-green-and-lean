@@ -61,6 +61,10 @@ class Car
 	  			move_forward
 	  		when :move_backward
 	  			move_backward
+	  		when :turn_left
+	  			turn_left
+	  		when :turn_right
+	  			turn_right
   		end
   	end
   end
