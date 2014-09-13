@@ -1,5 +1,5 @@
-require "car"
-require "InvalidInputException"
+require_relative 'car'
+require_relative 'InvalidInputException'
 
 class String
     def is_i?

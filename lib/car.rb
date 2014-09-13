@@ -1,6 +1,6 @@
-require 'OutsideGridException'
-require 'InvalidCommandException'
-require 'grid'
+require_relative 'OutsideGridException'
+require_relative 'InvalidCommandException'
+require_relative 'grid'
 
 class Car
 	attr_reader :x, :y, :orientation

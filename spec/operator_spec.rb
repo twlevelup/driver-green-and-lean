@@ -1,4 +1,4 @@
-require "operator"
+require 'operator'
 
 describe Operator do
 	describe 'when parsing a starting location and orientation' do
