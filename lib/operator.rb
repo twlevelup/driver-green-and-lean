@@ -82,7 +82,7 @@ class Operator
 		rescue InvalidInputException => e
 			"Invalid input: #{e.message}\n" +
 			"\n"+
-			"Enter your command in the format (x),(y),(orientation) (commands), for example: 1,2,N FFRFFLB"
+			"Enter your command in the format (x),(y),(orientation) (commands), for example: 1,2,N MMRMMLB"
 
 		rescue OutsideGridException => e
 			"The taxi stopped before completing all commands because it reached the boundary of the CBD.\n"+
