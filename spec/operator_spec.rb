@@ -116,13 +116,13 @@ describe Operator do
 			expect(actualOutput).to include("Enter your command in the format")
 		end
 
-		it 'attempting to move a taxi outside the grid should show a warning message and the position at which the taxi stopped' do
+		it 'attempting to move a taxi outside the grid should show a warning message and not move the taxi' do
 			@operator = Operator.new
 
 			actualOutput = @operator.run_input('2,1,S MM')
 
-			expect(actualOutput).to include('The taxi stopped before completing all commands because it reached the boundary of the CBD.')
-			expect(actualOutput).to include('2,0,S')
+			expect(actualOutput).to include('The taxi did not move because the commands would have caused it to move outside the boundary of the CBD.')
+			expect(actualOutput).to include('2,1,S')
 		end
 	end
 end

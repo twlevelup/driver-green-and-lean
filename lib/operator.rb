@@ -79,6 +79,7 @@ class Operator
 			instructions = parse_result[1]
 
 			car = Car.new(position[0], position[1], position[2])
+			original_car = car.clone
 			car.perform_commands(instructions)
 
 			format_position_for_user(car)
@@ -89,8 +90,8 @@ class Operator
 			"Enter your command in the format (x),(y),(orientation) (commands), for example: 1,2,N MMRMMLB"
 
 		rescue OutsideGridException => e
-			"The taxi stopped before completing all commands because it reached the boundary of the CBD.\n"+
-			format_position_for_user(car)
+			"The taxi did not move because the commands would have caused it to move outside the boundary of the CBD.\n"+
+			format_position_for_user(original_car)
 		end
 	end
 
