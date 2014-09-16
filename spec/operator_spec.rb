@@ -11,7 +11,7 @@ describe Operator do
 			it "should parse '#{input}' as #{expectedOutput}" do
 				@operator = Operator.new
 
-				actual = @operator.parse_position(input)
+				actual = @operator.parse_starting_position(input)
 
 				expect(actual).to eq(expectedOutput)
 			end	
@@ -28,7 +28,7 @@ describe Operator do
 			it "should report '#{badInput}' as invalid" do
 				@operator = Operator.new
 
-				expect { @operator.parse_position(badInput) }.to raise_error(InvalidInputException)
+				expect { @operator.parse_starting_position(badInput) }.to raise_error(InvalidInputException)
 			end
 		end
 	end
@@ -123,6 +123,16 @@ describe Operator do
 
 			expect(actualOutput).to include('The taxi did not move because the commands would have caused it to move outside the boundary of the CBD.')
 			expect(actualOutput).to include('2,1,S')
+		end
+	end
+
+	describe 'when parsing a destination position' do
+		it "should parse '1,2' as (1, 2)" do
+			@operator = Operator.new
+
+			actualOutput = @operator.parse_destination('1,2')
+
+			expect(actualOutput).to eq([1, 2])
 		end
 	end
 end

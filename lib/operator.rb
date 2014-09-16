@@ -22,27 +22,20 @@ class Operator
 			raise InvalidInputException, "Command is not in the required format."
 		end
 
-		position = parse_position parts[0]
+		position = parse_starting_position parts[0]
 		instructions = parse_instruction parts[1]
 
 		[position, instructions]
 	end
 
-	def parse_position(text)
+	def parse_starting_position(text)
 		points = text.split(',')
 
 		if points.length != 3
 			raise InvalidInputException, "Starting position and orientation is not in a recognised format."
-		elsif !points[0].is_i? or !points[1].is_i?
-			raise InvalidInputException, "Starting position must be specifed as two whole numbers."
 		end
 
-		x = points[0].to_i
-		y = points[1].to_i
-
-		if not Grid.valid_position?(x, y)
-			raise InvalidInputException, "Starting position (#{x}, #{y}) is not valid."
-		end
+		coordinates = parse_position(points[0], points[1], 'Starting position')
 
 		if ORIENTATION_NAMES_TO_SYMBOLS.has_key?(points[2])
 			orientation = ORIENTATION_NAMES_TO_SYMBOLS[points[2]]
@@ -50,7 +43,32 @@ class Operator
 			raise InvalidInputException, "Starting orientation '#{points[2]}' is not recognised."
 		end
 
-		[x, y, orientation]
+		[coordinates[0], coordinates[1], orientation]
+	end
+
+	def parse_destination(text)
+		points = text.split(',')
+
+		if points.length != 2
+			raise InvalidInputException, "Ending position is not in a recognised format."
+		end
+
+		parse_position(points[0], points[1], 'Ending position')
+	end
+
+	def parse_position(x_string, y_string, type)
+		if !x_string.is_i? or !y_string.is_i?
+			raise InvalidInputException, "#{type} must be specifed as two whole numbers."
+		end
+
+		x = x_string.to_i
+		y = y_string.to_i
+
+		if not Grid.valid_position?(x, y)
+			raise InvalidInputException, "#{type} (#{x}, #{y}) is not valid."
+		end
+
+		[x, y]
 	end
 
 	def parse_instruction(instructions)
