@@ -134,5 +134,20 @@ describe Operator do
 
 			expect(actualOutput).to eq([1, 2])
 		end
+
+		[
+			'-1,0',
+			'ab',
+			'0.1,3',
+			'3,0.5',
+			'6,-3',
+			'a,b'
+		].each do |badInput|
+			it "should report '#{badInput}' as invalid" do
+				@operator = Operator.new
+
+				expect { @operator.parse_destination(badInput) }.to raise_error(InvalidInputException)
+			end
+		end
 	end
 end
