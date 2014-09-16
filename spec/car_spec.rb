@@ -66,6 +66,47 @@ describe Car do
   	end
   end
 
+  describe "when performing a list of commands" do
+    {
+      [0, 0, :north, []] => [0, 0, :north],
+      [0, 0, :north, [:move_forward]] => [0, 1, :north],
+      [0, 4, :north, [:move_backward]] => [0, 3, :north],
+      [0, 0, :south, [:turn_left]] => [0, 0, :east],
+      [0, 0, :south, [:turn_right]] => [0, 0, :west],
+      [0, 0, :north, [:move_forward, :turn_left]] => [0, 1, :west],
+    }.each do |input, expectedEnd|
+      describe "when a car starts at #{input[0]}, #{input[1]} and is pointing #{input[2]}" do
+        it "should move to #{expectedEnd[0]}, #{expectedEnd[1]} and be pointing #{expectedEnd[2]} after performing the list of commands: #{input[3]}" do
+          @car = Car.new(input[0], input[1], input[2])
+
+          @car.perform_commands(input[3])
+
+          expect(@car.position).to eq(expectedEnd)
+        end
+      end
+    end
+
+    it "should not allow invalid commands" do 
+      @car = Car.new(0, 0, :north)
+
+      expect { @car.perform_commands([:rubbish]) }.to raise_error(InvalidCommandException)
+    end
+
+    it "should not move the car if the list of commands contains an invalid command" do
+      @car = Car.new(2, 0, :north)
+
+      expect { @car.perform_commands([:move_forward, :rubbish]) }.to raise_error(InvalidCommandException)
+      expect(@car.position).to eq([2, 0, :north])
+    end
+
+    it "should stop the car at the boundary and report an error if the commands would cause the car to go outside the allowed area" do
+      @car = Car.new(2, 1, :south)
+
+      expect { @car.perform_commands([:move_forward, :move_forward]) }.to raise_error('Taxi is not permitted to move outside the grid.')
+      expect(@car.position).to eq([2, 0, :south])
+    end
+  end
+
   describe 'when checking positions' do
 	  [
 	  	[-1, 0],

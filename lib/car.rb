@@ -1,5 +1,6 @@
-require 'OutsideGridException'
-require 'grid'
+require_relative 'OutsideGridException'
+require_relative 'InvalidCommandException'
+require_relative 'grid'
 
 class Car
 	attr_reader :x, :y, :orientation
@@ -52,6 +53,18 @@ class Car
 
   def position
   	[@x, @y, @orientation]
+  end
+
+  def perform_commands(commands)
+  	commands.each do |e|
+  		if not respond_to?(e)
+  			raise InvalidCommandException, "Invalid command in list: #{e}"
+  		end
+  	end
+
+  	commands.each do |e|  
+  		send e
+  	end
   end
 
   private
