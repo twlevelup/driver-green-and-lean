@@ -22,7 +22,8 @@ describe Operator do
 			'0,0,0,N',
 			'0,0,X',
 			'1.5,2.2,S',
-			'a, B, w'
+			'a, B, w',
+			'-1,0,N'
 		].each do |badInput| 
 			it "should report '#{badInput}' as invalid" do
 				@operator = Operator.new
@@ -68,7 +69,7 @@ describe Operator do
 		{
 			'1,2,S MLB' => [[1, 2, :south], [:move_forward, :turn_left, :move_backward]],
 			'3,5,W  R' => [[3, 5, :west], [:turn_right]],
-			' 4,6,N BMMML' => [[4, 6, :north], [:move_backward, :move_forward, :move_forward, :move_forward, :turn_left]]
+			' 4,5,N BMMML' => [[4, 5, :north], [:move_backward, :move_forward, :move_forward, :move_forward, :turn_left]]
 		}.each do |input, expectedOutput|
 			it "should parse '#{input}' as a car starting at (#{expectedOutput[0][0]}, #{expectedOutput[0][1]}), pointing #{expectedOutput[0][2]} and having the list of commands #{expectedOutput[1]}" do
 				@operator = Operator.new
@@ -120,8 +121,8 @@ describe Operator do
 
 			actualOutput = @operator.run_input('2,1,S MM')
 
-			expect(actualOutput).to include("The taxi stopped before completing all commands because it reached the boundary of the CBD.")
-			expect(actualOutput).to include("2,0,S")
+			expect(actualOutput).to include('The taxi stopped before completing all commands because it reached the boundary of the CBD.')
+			expect(actualOutput).to include('2,0,S')
 		end
 	end
 end

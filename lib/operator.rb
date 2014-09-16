@@ -40,6 +40,10 @@ class Operator
 		x = points[0].to_i
 		y = points[1].to_i
 
+		if not Grid.valid_position?(x, y)
+			raise InvalidInputException, "Starting position (#{x}, #{y}) is not valid."
+		end
+
 		if ORIENTATION_NAMES_TO_SYMBOLS.has_key?(points[2])
 			orientation = ORIENTATION_NAMES_TO_SYMBOLS[points[2]]
 		else
