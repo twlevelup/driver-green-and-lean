@@ -1,5 +1,6 @@
 require_relative 'car'
 require_relative 'InvalidInputException'
+require_relative 'pathfinder'
 
 class String
     def is_i?
@@ -100,14 +101,19 @@ class Operator
 	def run_input(input)
 		begin
 			parse_result = parse_command(input)
-			position = parse_result[0]
+			original_position = parse_result[0]
 			instructions = parse_result[1]
 
-			car = Car.new(position[0], position[1], position[2])
-			original_car = car.clone
-			car.perform_commands(instructions)
+			car = Car.new(original_position[0], original_position[1], original_position[2])
+			positions = car.perform_commands(instructions)
 
-			format_position_for_user(car)
+			result = ''
+
+			for position in positions
+				result << format_position_for_user(position) + "\n"
+			end
+
+			result.chomp
 
 		rescue InvalidInputException => e
 			"Invalid input: #{e.message}\n" +
@@ -117,14 +123,14 @@ class Operator
 
 		rescue OutsideGridException => e
 			"The taxi did not move because the instruction would have caused it to move outside the boundary of the CBD.\n" +
-			format_position_for_user(original_car)
+			format_position_for_user(original_position)
 		end
 	end
 
 	private
-	def format_position_for_user(car)
-		user_friendly_orientation = ORIENTATION_NAMES_TO_SYMBOLS.invert[car.orientation]
+	def format_position_for_user(position)
+		user_friendly_orientation = ORIENTATION_NAMES_TO_SYMBOLS.invert[position[2]]
 
-		"#{car.x},#{car.y},#{user_friendly_orientation}"
+		"#{position[0]},#{position[1]},#{user_friendly_orientation}"
 	end
 end

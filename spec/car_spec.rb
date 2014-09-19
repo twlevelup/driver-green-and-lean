@@ -68,20 +68,21 @@ describe Car do
 
   describe "when performing a list of commands" do
     {
-      [0, 0, :north, []] => [0, 0, :north],
-      [0, 0, :north, [:move_forward]] => [0, 1, :north],
-      [0, 4, :north, [:move_backward]] => [0, 3, :north],
-      [0, 0, :south, [:turn_left]] => [0, 0, :east],
-      [0, 0, :south, [:turn_right]] => [0, 0, :west],
-      [0, 0, :north, [:move_forward, :turn_left]] => [0, 1, :west],
-    }.each do |input, expectedEnd|
+      [0, 0, :north, []] => [[0, 0, :north]],
+      [0, 0, :north, [:move_forward]] => [[0, 0, :north], [0, 1, :north]],
+      [0, 4, :north, [:move_backward]] => [[0, 4, :north], [0, 3, :north]],
+      [0, 0, :south, [:turn_left]] => [[0, 0, :south], [0, 0, :east]],
+      [0, 0, :south, [:turn_right]] => [[0, 0, :south], [0, 0, :west]],
+      [0, 0, :north, [:move_forward, :turn_left]] => [[0, 0, :north], [0, 1, :north], [0, 1, :west]]
+    }.each do |input, expectedMovedThrough|
       describe "when a car starts at #{input[0]}, #{input[1]} and is pointing #{input[2]}" do
-        it "should move to #{expectedEnd[0]}, #{expectedEnd[1]} and be pointing #{expectedEnd[2]} after performing the list of commands: #{input[3]}" do
+        it "should move through the positions #{expectedMovedThrough} after performing the list of commands: #{input[3]}" do
           @car = Car.new(input[0], input[1], input[2])
 
-          @car.perform_commands(input[3])
+          movedThrough = @car.perform_commands(input[3])
 
-          expect(@car.position).to eq(expectedEnd)
+          expect(@car.position).to eq(expectedMovedThrough.last)
+          expect(movedThrough).to eq(expectedMovedThrough)
         end
       end
     end

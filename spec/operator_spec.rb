@@ -96,13 +96,13 @@ describe Operator do
 
 	describe 'when running a user command' do 
 		{
-			'0,0,N MRMMMLM' => '3,2,N',
-			'2,3,W RMRMMLM' => '4,5,N',
-			'1,3,E MRMR' => '2,2,W',
-			'0,1,N 2,3' => '2,3,N',
-			'3,3,W 4,2' => '4,2,S'
+			'0,0,N MRMMMLM' => "0,0,N\n0,1,N\n0,1,E\n1,1,E\n2,1,E\n3,1,E\n3,1,N\n3,2,N",
+			'2,3,W RMRMMLM' => "2,3,W\n2,3,N\n2,4,N\n2,4,E\n3,4,E\n4,4,E\n4,4,N\n4,5,N",
+			'1,3,E MRMR' => "1,3,E\n2,3,E\n2,3,S\n2,2,S\n2,2,W",
+			'0,1,N 2,3' => "0,1,N\n0,1,E\n1,1,E\n2,1,E\n2,1,N\n2,2,N\n2,3,N",
+			'3,3,W 4,2' => "3,3,W\n3,3,N\n3,3,E\n4,3,E\n4,3,S\n4,2,S"
 		}.each do |input, expectedOutput|
-			it "should respond to the input '#{input}' with the response '#{expectedOutput}'" do 
+			it "should respond to the input '#{input}' with the response '#{expectedOutput.dump}'" do 
 				@operator = Operator.new
 
 				actualOutput = @operator.run_input(input)

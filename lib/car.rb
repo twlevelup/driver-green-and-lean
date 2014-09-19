@@ -62,9 +62,14 @@ class Car
   		end
   	end
 
+    moved_through = [position]
+
   	commands.each do |e|  
   		send e
+      moved_through << position
   	end
+
+    moved_through
   end
 
   private
