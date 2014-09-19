@@ -23,7 +23,14 @@ class Operator
 		end
 
 		position = parse_starting_position parts[0]
-		instructions = parse_instruction parts[1]
+
+		if parts[1].include?(',')
+			destination = parse_destination parts[1]
+			pathfinder = Pathfinder.new()
+			instructions = pathfinder.generate_path(position, destination)
+		else
+			instructions = parse_commands_list parts[1]
+		end
 
 		[position, instructions]
 	end
@@ -41,6 +48,10 @@ class Operator
 			orientation = ORIENTATION_NAMES_TO_SYMBOLS[points[2]]
 		else
 			raise InvalidInputException, "Starting orientation '#{points[2]}' is not recognised."
+		end
+
+		if not Grid.valid_position?(coordinates[0], coordinates[1])
+			raise InvalidInputException, "Starting position (#{coordinates[0]}, #{coordinates[1]}) is not valid because it is outside the grid."
 		end
 
 		[coordinates[0], coordinates[1], orientation]
@@ -64,14 +75,10 @@ class Operator
 		x = x_string.to_i
 		y = y_string.to_i
 
-		if not Grid.valid_position?(x, y)
-			raise InvalidInputException, "#{type} (#{x}, #{y}) is not valid."
-		end
-
 		[x, y]
 	end
 
-	def parse_instruction(instructions)
+	def parse_commands_list(commands) 
 		instructions_map = {
 			'M' => :move_forward,
 			'B' => :move_backward,
@@ -79,7 +86,7 @@ class Operator
 			'R' => :turn_right
 		}
 
-		instructions.split('').map do |instruction|
+		commands.split('').map do |instruction|
 			instruction.upcase!
 
 			if instructions_map.has_key?(instruction)
@@ -104,11 +111,12 @@ class Operator
 
 		rescue InvalidInputException => e
 			"Invalid input: #{e.message}\n" +
-			"\n"+
-			"Enter your command in the format (x),(y),(orientation) (commands), for example: 1,2,N MMRMMLB"
+			"\n" +
+			"Enter your command in the format (initial x coordinate),(initial y coordinate),(orientation) (commands), for example: 1,2,N MMRMMLB,\n" + 
+			"or in the format (initial x coordinate),(initial y coordinate),(orientation) (destination x coordinate),(destination y coordinate)"
 
 		rescue OutsideGridException => e
-			"The taxi did not move because the commands would have caused it to move outside the boundary of the CBD.\n"+
+			"The taxi did not move because the instruction would have caused it to move outside the boundary of the CBD.\n" +
 			format_position_for_user(original_car)
 		end
 	end

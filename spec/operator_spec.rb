@@ -33,7 +33,7 @@ describe Operator do
 		end
 	end
 
-	describe 'when parsing instructions for a car' do
+	describe 'when parsing a commands list' do
 		{ 
 			'' => [],
 			'M' => [:move_forward],
@@ -47,7 +47,7 @@ describe Operator do
 			it "should parse '#{input}' as #{expectedOutput}" do
 				@operator = Operator.new
 
-				actual = @operator.parse_instruction(input)
+				actual = @operator.parse_commands_list(input)
 
 				expect(actual).to eq(expectedOutput)
 			end	
@@ -60,7 +60,7 @@ describe Operator do
 			it "should report '#{badInput}' as invalid" do
 				@operator = Operator.new
 
-				expect { @operator.parse_instruction(badInput) }.to raise_error(InvalidInputException)
+				expect { @operator.parse_commands_list(badInput) }.to raise_error(InvalidInputException)
 			end
 		end
 	end
@@ -69,7 +69,8 @@ describe Operator do
 		{
 			'1,2,S MLB' => [[1, 2, :south], [:move_forward, :turn_left, :move_backward]],
 			'3,5,W  R' => [[3, 5, :west], [:turn_right]],
-			' 4,5,N BMMML' => [[4, 5, :north], [:move_backward, :move_forward, :move_forward, :move_forward, :turn_left]]
+			' 4,5,N BMMML' => [[4, 5, :north], [:move_backward, :move_forward, :move_forward, :move_forward, :turn_left]],
+			'0,1,N 2,3' => [[0, 1, :north], [:turn_right, :move_forward, :move_forward, :turn_left, :move_forward, :move_forward]]
 		}.each do |input, expectedOutput|
 			it "should parse '#{input}' as a car starting at (#{expectedOutput[0][0]}, #{expectedOutput[0][1]}), pointing #{expectedOutput[0][2]} and having the list of commands #{expectedOutput[1]}" do
 				@operator = Operator.new
@@ -97,7 +98,9 @@ describe Operator do
 		{
 			'0,0,N MRMMMLM' => '3,2,N',
 			'2,3,W RMRMMLM' => '4,5,N',
-			'1,3,E MRMR' => '2,2,W'
+			'1,3,E MRMR' => '2,2,W',
+			'0,1,N 2,3' => '2,3,N',
+			'3,3,W 4,2' => '4,2,S'
 		}.each do |input, expectedOutput|
 			it "should respond to the input '#{input}' with the response '#{expectedOutput}'" do 
 				@operator = Operator.new
@@ -116,13 +119,22 @@ describe Operator do
 			expect(actualOutput).to include("Enter your command in the format")
 		end
 
-		it 'attempting to move a taxi outside the grid should show a warning message and not move the taxi' do
+		it 'attempting to move a taxi outside the grid using commands should show a warning message and not move the taxi' do
 			@operator = Operator.new
 
 			actualOutput = @operator.run_input('2,1,S MM')
 
-			expect(actualOutput).to include('The taxi did not move because the commands would have caused it to move outside the boundary of the CBD.')
+			expect(actualOutput).to include('The taxi did not move because the instruction would have caused it to move outside the boundary of the CBD.')
 			expect(actualOutput).to include('2,1,S')
+		end
+
+		it 'attempting to move a taxi outside the grid using a destination position should show a warning message and not move the taxi' do
+			@operator = Operator.new
+
+			actualOutput = @operator.run_input('6,1,S -1,3')
+
+			expect(actualOutput).to include('The taxi did not move because the instruction would have caused it to move outside the boundary of the CBD.')
+			expect(actualOutput).to include('6,1,S')
 		end
 	end
 
@@ -136,11 +148,9 @@ describe Operator do
 		end
 
 		[
-			'-1,0',
 			'ab',
 			'0.1,3',
 			'3,0.5',
-			'6,-3',
 			'a,b'
 		].each do |badInput|
 			it "should report '#{badInput}' as invalid" do
